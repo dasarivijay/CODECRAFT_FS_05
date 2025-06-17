@@ -1,0 +1,895 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SocialConnect - Connect, Share, Engage</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Header */
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 20px 30px;
+            margin-bottom: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            animation: slideDown 0.6s ease-out;
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: 800;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 15px;
+        }
+
+        .nav-btn {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 25px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nav-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        .nav-btn.active {
+            background: linear-gradient(45deg, #764ba2, #667eea);
+        }
+
+        /* Main Layout */
+        .main-content {
+            display: grid;
+            grid-template-columns: 300px 1fr 300px;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .sidebar, .right-panel {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 25px;
+            height: fit-content;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            animation: slideIn 0.8s ease-out;
+        }
+
+        .feed {
+            animation: fadeIn 1s ease-out;
+        }
+
+        /* Profile Card */
+        .profile-card {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .profile-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            margin: 0 auto 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+            box-shadow: 0 4px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        .profile-name {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .profile-handle {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .profile-stats {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid #eee;
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-weight: 700;
+            font-size: 18px;
+            color: #667eea;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: #666;
+        }
+
+        /* Post Creation */
+        .post-creator {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            animation: slideUp 0.6s ease-out;
+        }
+
+        .post-input {
+            width: 100%;
+            min-height: 120px;
+            border: 2px solid #f0f0f0;
+            border-radius: 15px;
+            padding: 15px;
+            font-size: 16px;
+            resize: vertical;
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.8);
+        }
+
+        .post-input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .post-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 15px;
+        }
+
+        .media-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .media-btn {
+            padding: 10px 15px;
+            border: 2px solid #f0f0f0;
+            border-radius: 12px;
+            background: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 14px;
+        }
+
+        .media-btn:hover {
+            border-color: #667eea;
+            color: #667eea;
+        }
+
+        .post-btn {
+            padding: 12px 30px;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .post-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        /* Posts */
+        .post {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            animation: postSlideIn 0.6s ease-out;
+        }
+
+        .post:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .post-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .post-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            margin-right: 15px;
+        }
+
+        .post-user-info {
+            flex: 1;
+        }
+
+        .post-username {
+            font-weight: 700;
+            margin-bottom: 2px;
+        }
+
+        .post-time {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .post-content {
+            font-size: 16px;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        .post-tags {
+            margin-bottom: 15px;
+        }
+
+        .tag {
+            display: inline-block;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 12px;
+            margin-right: 8px;
+            margin-bottom: 5px;
+        }
+
+        .post-media {
+            margin-bottom: 15px;
+            border-radius: 15px;
+            overflow: hidden;
+        }
+
+        .post-image, .post-video {
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+        }
+
+        .post-actions {
+            display: flex;
+            justify-content: space-around;
+            border-top: 1px solid #f0f0f0;
+            padding-top: 15px;
+        }
+
+        .action-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 15px;
+            border: none;
+            background: none;
+            cursor: pointer;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            font-size: 14px;
+        }
+
+        .action-btn:hover {
+            background: rgba(102, 126, 234, 0.1);
+            color: #667eea;
+        }
+
+        .action-btn.liked {
+            color: #e74c3c;
+        }
+
+        /* Comments */
+        .comments-section {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid #f0f0f0;
+        }
+
+        .comment {
+            display: flex;
+            margin-bottom: 15px;
+            animation: fadeIn 0.4s ease-out;
+        }
+
+        .comment-avatar {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 12px;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+
+        .comment-content {
+            flex: 1;
+            background: #f8f9fa;
+            padding: 10px 15px;
+            border-radius: 15px;
+        }
+
+        .comment-user {
+            font-weight: 600;
+            font-size: 14px;
+            margin-bottom: 3px;
+        }
+
+        .comment-text {
+            font-size: 14px;
+            line-height: 1.4;
+        }
+
+        .comment-input {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .comment-input input {
+            flex: 1;
+            padding: 10px 15px;
+            border: 1px solid #ddd;
+            border-radius: 20px;
+            outline: none;
+        }
+
+        .comment-input input:focus {
+            border-color: #667eea;
+        }
+
+        .comment-btn {
+            padding: 10px 20px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        /* Trending */
+        .trending-section {
+            margin-bottom: 25px;
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: #333;
+        }
+
+        .trending-item {
+            padding: 15px;
+            border-radius: 12px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: rgba(102, 126, 234, 0.05);
+        }
+
+        .trending-item:hover {
+            background: rgba(102, 126, 234, 0.1);
+            transform: translateX(5px);
+        }
+
+        .trending-tag {
+            font-weight: 600;
+            color: #667eea;
+            margin-bottom: 3px;
+        }
+
+        .trending-count {
+            font-size: 12px;
+            color: #666;
+        }
+
+        /* Notifications */
+        .notification {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            border-radius: 12px;
+            margin-bottom: 10px;
+            background: rgba(102, 126, 234, 0.05);
+            animation: notificationSlide 0.5s ease-out;
+        }
+
+        .notification-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 14px;
+            font-weight: bold;
+            margin-right: 12px;
+        }
+
+        .notification-text {
+            font-size: 14px;
+            line-height: 1.4;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(5px);
+            z-index: 1000;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        .modal-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 500px;
+            animation: modalSlide 0.4s ease-out;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .modal-title {
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: #666;
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .sidebar, .right-panel {
+                display: none;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+            
+            .header {
+                padding: 15px 20px;
+                border-radius: 15px;
+            }
+            
+            .logo {
+                font-size: 24px;
+            }
+            
+            .nav-buttons {
+                gap: 10px;
+            }
+            
+            .nav-btn {
+                padding: 10px 15px;
+                font-size: 14px;
+            }
+        }
+
+        /* Animations */
+        @keyframes slideDown {
+            from { transform: translateY(-30px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(-30px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(30px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes postSlideIn {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        @keyframes notificationSlide {
+            from { transform: translateX(20px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        @keyframes modalSlide {
+            from { transform: translate(-50%, -60%); opacity: 0; }
+            to { transform: translate(-50%, -50%); opacity: 1; }
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .notification-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: #e74c3c;
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <div class="logo">SocialConnect</div>
+            <div class="nav-buttons">
+                <button class="nav-btn active" onclick="showSection('feed')">🏠 Home</button>
+                <button class="nav-btn" onclick="showSection('profile')">👤 Profile</button>
+                <button class="nav-btn" onclick="showSection('notifications')" style="position: relative;">
+                    🔔 Notifications
+                    <span class="notification-badge" id="notificationBadge">3</span>
+                </button>
+                <button class="nav-btn" onclick="showSection('trending')">🔥 Trending</button>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Left Sidebar -->
+            <div class="sidebar">
+                <div class="profile-card">
+                    <div class="profile-avatar" id="currentUserAvatar">JD</div>
+                    <div class="profile-name" id="currentUserName">John Doe</div>
+                    <div class="profile-handle" id="currentUserHandle">@johndoe</div>
+                    <div class="profile-stats">
+                        <div class="stat">
+                            <div class="stat-number" id="postsCount">42</div>
+                            <div class="stat-label">Posts</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-number" id="followersCount">1.2K</div>
+                            <div class="stat-label">Followers</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-number" id="followingCount">345</div>
+                            <div class="stat-label">Following</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="trending-section">
+                    <div class="section-title">Quick Actions</div>
+                    <button class="nav-btn" onclick="openCreatePost()" style="width: 100%; margin-bottom: 10px;">✏️ Create Post</button>
+                    <button class="nav-btn" onclick="openEditProfile()" style="width: 100%;">⚙️ Edit Profile</button>
+                </div>
+            </div>
+
+            <!-- Main Feed -->
+            <div class="feed" id="mainFeed">
+                <!-- Post Creator -->
+                <div class="post-creator">
+                    <textarea class="post-input" placeholder="What's on your mind?" id="postContent"></textarea>
+                    <div class="post-actions">
+                        <div class="media-buttons">
+                            <button class="media-btn" onclick="addMedia('image')">📷 Photo</button>
+                            <button class="media-btn" onclick="addMedia('video')">🎥 Video</button>
+                            <button class="media-btn" onclick="addTags()">🏷️ Tags</button>
+                        </div>
+                        <button class="post-btn" onclick="createPost()">Share Post</button>
+                    </div>
+                    <div id="selectedMedia" style="margin-top: 15px;"></div>
+                    <div id="selectedTags" style="margin-top: 10px;"></div>
+                </div>
+
+                <!-- Posts Container -->
+                <div id="postsContainer">
+                    <!-- Posts will be dynamically added here -->
+                </div>
+            </div>
+
+            <!-- Right Panel -->
+            <div class="right-panel">
+                <div class="trending-section">
+                    <div class="section-title">🔥 Trending Now</div>
+                    <div class="trending-item" onclick="searchTag('webdev')">
+                        <div class="trending-tag">#WebDev</div>
+                        <div class="trending-count">2.4K posts</div>
+                    </div>
+                    <div class="trending-item" onclick="searchTag('design')">
+                        <div class="trending-tag">#Design</div>
+                        <div class="trending-count">1.8K posts</div>
+                    </div>
+                    <div class="trending-item" onclick="searchTag('javascript')">
+                        <div class="trending-tag">#JavaScript</div>
+                        <div class="trending-count">3.2K posts</div>
+                    </div>
+                    <div class="trending-item" onclick="searchTag('startup')">
+                        <div class="trending-tag">#Startup</div>
+                        <div class="trending-count">957 posts</div>
+                    </div>
+                </div>
+
+                <div class="trending-section">
+                    <div class="section-title">👥 Suggested Follows</div>
+                    <div class="trending-item" onclick="followUser('sarah_codes')">
+                        <div class="trending-tag">@sarah_codes</div>
+                        <div class="trending-count">Frontend Developer</div>
+                    </div>
+                    <div class="trending-item" onclick="followUser('design_guru')">
+                        <div class="trending-tag">@design_guru</div>
+                        <div class="trending-count">UI/UX Designer</div>
+                    </div>
+                    <div class="trending-item" onclick="followUser('tech_news')">
+                        <div class="trending-tag">@tech_news</div>
+                        <div class="trending-count">Tech Journalist</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Notifications Panel (Hidden by default) -->
+        <div class="feed hidden" id="notificationsPanel">
+            <div class="post" style="text-align: center;">
+                <div class="section-title">🔔 Notifications</div>
+                <div id="notificationsContainer">
+                    <div class="notification">
+                        <div class="notification-avatar">SC</div>
+                        <div class="notification-text">
+                            <strong>Sarah Chen</strong> liked your post about web development trends
+                        </div>
+                    </div>
+                    <div class="notification">
+                        <div class="notification-avatar">MJ</div>
+                        <div class="notification-text">
+                            <strong>Mike Johnson</strong> started following you
+                        </div>
+                    </div>
+                    <div class="notification">
+                        <div class="notification-avatar">AL</div>
+                        <div class="notification-text">
+                            <strong>Anna Lopez</strong> commented on your photo: "Amazing shot!"
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Profile Panel (Hidden by default) -->
+        <div class="feed hidden" id="profilePanel">
+            <div class="post">
+                <div class="section-title">👤 Your Profile</div>
+                <div class="profile-card" style="text-align: left;">
+                    <div style="display: flex; align-items: center; margin-bottom: 20px;">
+                        <div class="profile-avatar" style="margin-right: 20px;">JD</div>
+                        <div>
+                            <div class="profile-name">John Doe</div>
+                            <div class="profile-handle">@johndoe</div>
+                        </div>
+                    </div>
+                    <p style="margin-bottom: 15px; color: #666;">
+                        Passionate developer and tech enthusiast. Love creating amazing web experiences and sharing knowledge with the community.
+                    </p>
+                    <div class="profile-stats" style="border: none; padding: 0;">
+                        <div class="stat">
+                            <div class="stat-number">42</div>
+                            <div class="stat-label">Posts</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-number">1.2K</div>
+                            <div class="stat-label">Followers</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-number">345</div>
+                            <div class="stat-label">Following</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-number">2.8K</div>
+                            <div class="stat-label">Likes</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Trending Panel (Hidden by default) -->
+        <div class="feed hidden" id="trendingPanel">
+            <div class="post">
+                <div class="section-title">🔥 Trending Topics</div>
+                <div class="trending-section">
+                    <div class="trending-item">
+                        <div class="trending-tag">#WebDevelopment</div>
+                        <div class="trending-count">2.4K posts • Trending in Technology</div>
+                    </div>
+                    <div class="trending-item">
+                        <div class="trending-tag">#AIRevolution</div>
+                        <div class="trending-count">3.7K posts • Trending worldwide</div>
+                    </div>
+                    <div class="trending-item">
+                        <div class="trending-tag">#DesignThinking</div>
+                        <div class="trending-count">1.8K posts • Trending in Design</div>
+                    </div>
+                    <div class="trending-item">
+                        <div class="trending-tag">#StartupLife</div>
+                        <div class="trending-count">957 posts • Trending in Business</div>
+                    </div>
+                    <div class="trending-item">
+                        <div class="trending-tag">#RemoteWork</div>
+                        <div class="trending-count">1.3K posts • Trending in Career</div>
+                    </div>
+                    <div class="trending-item">
+                        <div class="trending-tag">#OpenSource</div>
+                        <div class="trending-count">892 posts • Trending in Technology</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modals -->
+    <div class="modal" id="createPostModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title">Create New Post</div>
+                <button class="close-btn" onclick="closeModal('createPostModal')">&times;</button>
+            </div>
+            <textarea class="post-input" placeholder="What's happening?" id="modalPostContent"></textarea>
+            <div class="post-actions" style="margin-top: 15px;">
+                <div class="media-buttons">
+                    <button class="media-btn">📷 Photo</button>
+                    <button class="media-btn">🎥 Video</button>
+                    <button class="media-btn">🏷️ Tags</button>
+                </div>
+                <button class="post-btn" onclick="createPostFromModal()">Post</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // App State
+        let posts = [];
+        let currentUser = {
+            name: 'John Doe',
+            handle: '@johndoe',
+            avatar: 'JD'
+        };
+        let notifications = [];
+        let selectedTags = [];
+        let selectedMedia = null;
+
+        // Initialize the app
+        function initApp() {
+            loadSamplePosts();
+            showSection('feed');
+        }
+
+        // Load sample posts
+        function loadSamplePosts() {
+            const samplePosts = [
+                {
+                    id: 1,
+                    user: { name: 'Sarah Chen', handle: '@sarah_codes', avatar: 'SC' },
+                    content: 'Just deployed my new React app! The feeling of seeing your code come to life never gets old. 🚀',
+                    tags: ['react', 'webdev', 'coding'],
+                    time: '2 hours ago',
+                    likes: 24,
+                    comments: [
+                        { user: 'Mike Johnson', avatar: 'MJ', text: 'Looks amazing! Great work 👏' },
+                        { user: 'Anna Lopez', avatar: 'AL', text: 'Would love to see the source code!' }
+                    ],
+                    media: null,
+                    liked: false
+                },
+                {
+                    id: 2,
+                    user: { name: 'Design Guru', handle: '@design_guru', avatar: 'DG' },
+                    content: 'Color theory in UI design: How to choose the perfect palette for your next project. Thread 🧵',
+                    tags: ['design', 'ui', 'colors'],
+                    time: '4 hours ago',
+                    likes: 156,
+                    comments: [
+                        { user: 'Creative Mind', avatar: 'CM', text: 'This is so helpful! Saved for later.' }
+                    ],
+                    media: null,
+                    liked: true
+                },
+                {
+                    id: 3,
+                    user: { name: 'Tech News', handle: '@tech_news', avatar: 'TN' },
+                    content: 'Breaking: New JavaScript framework promises 50% faster rendering. What are your thoughts on the endless cycle of new frameworks?',
+                    tags: ['javascript',
